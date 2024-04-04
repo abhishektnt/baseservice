@@ -1,0 +1,34 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: base-app  # Replace with your desired service name
+#  data:
+#    mongodb:
+#      uri: mongodb://localhost:27017/catalouge  # Replace with your MongoDB connection URI
+#      database: catalouge  # Replace with your MongoDB database name (optional, if not in URI)
+  datasource:
+      url: jdbc:postgresql://localhost:5432/catalouge  # Replace with your PostgreSQL connection URL
+      username: postgres  # Replace with your PostgreSQL username
+      password: root  # Replace with your PostgreSQL password
+  redis:
+    host: localhost  # Replace with your Redis host if different
+    port: 6379  # Replace with your Redis port if different
+#  kafka:
+#    bootstrap-servers: localhost:9092  # Replace with your Kafka bootstrap servers
+
+# Optional: Additional configurations for each service (e.g., pool size, authentication)
+# Refer to Spring Boot documentation for specific configuration options for each service.
+
+#springdoc.api-docs.enabled=false
+#springdoc.swagger-ui.enabled=false
+springdoc:
+  swagger-ui:
+    path: /product-documentation
+  api-docs:
+    path: /product-api-docs
+app:
+  openapi:
+    dev-url: http://localhost:8080
+    prod-url: https://gravityer-api.com
