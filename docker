@@ -5,7 +5,7 @@ FROM adoptopenjdk:17-jdk-hotspot
 WORKDIR /app
 
 # Copy the packaged JAR file to the working directory
-COPY target/your-application.jar .
+COPY target/fastcommerce-0.0.1-SNAPSHOT.jar.jar .
 
 # Expose the port that your Spring Boot application listens on
 EXPOSE 8080
@@ -14,4 +14,4 @@ EXPOSE 8080
 # ENV VARIABLE_NAME value
 
 # Define the command to run your Spring Boot application
-CMD ["java", "-jar", "your-application.jar"]
+CMD ["java", "-jar", "fastcommerce-0.0.1-SNAPSHOT.jar.jar"]

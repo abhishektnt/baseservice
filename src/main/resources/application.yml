@@ -4,31 +4,44 @@ server:
 spring:
   application:
     name: base-app  # Replace with your desired service name
-#  data:
-#    mongodb:
-#      uri: mongodb://localhost:27017/catalouge  # Replace with your MongoDB connection URI
-#      database: catalouge  # Replace with your MongoDB database name (optional, if not in URI)
+  #  data:
+  #    mongodb:
+  #      uri: mongodb://localhost:27017/catalouge  # Replace with your MongoDB connection URI
+  #      database: catalouge  # Replace with your MongoDB database name (optional, if not in URI)
   datasource:
-      url: jdbc:postgresql://localhost:5432/catalouge  # Replace with your PostgreSQL connection URL
-      username: postgres  # Replace with your PostgreSQL username
-      password: root  # Replace with your PostgreSQL password
+    url: jdbc:postgresql://localhost:5432/catalouge  # Replace with your PostgreSQL connection URL
+    username: postgres  # Replace with your PostgreSQL username
+    password: root  # Replace with your PostgreSQL password
+  cache:
+    type: redis
   redis:
     host: localhost  # Replace with your Redis host if different
     port: 6379  # Replace with your Redis port if different
-#  kafka:
-#    bootstrap-servers: localhost:9092  # Replace with your Kafka bootstrap servers
+  kafka:
+    bootstrap-servers: localhost:9092  # Replace with your Kafka bootstrap servers
+    topic: gravity
+    consumer:
+      group-id: group_id
+      auto-offset-reset: earliest
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
-# Optional: Additional configurations for each service (e.g., pool size, authentication)
-# Refer to Spring Boot documentation for specific configuration options for each service.
 
-#springdoc.api-docs.enabled=false
-#springdoc.swagger-ui.enabled=false
 springdoc:
   swagger-ui:
+    #    enabled: false
     path: /product-documentation
   api-docs:
+    #    enabled: false
     path: /product-api-docs
 app:
   openapi:
     dev-url: http://localhost:8080
     prod-url: https://gravityer-api.com
+
+#logging:
+#  level:
+#    org.apache.kafka: ERROR

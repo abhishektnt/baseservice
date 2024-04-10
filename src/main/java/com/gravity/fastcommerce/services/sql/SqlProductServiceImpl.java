@@ -2,6 +2,9 @@ package com.gravity.fastcommerce.services.sql;
 
 import com.gravity.fastcommerce.entities.sql.Product;
 import com.gravity.fastcommerce.repositories.sql.SqlProductRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,29 +19,20 @@ public class SqlProductServiceImpl implements SqlProductService {
         this.sqlProductRepository = sqlProductRepository;
     }
 
+    @CachePut(value = "Product", key = "#product.id")
     @Override
     public Product createProduct(Product product) {
         return sqlProductRepository.save(product);
     }
 
+    @Cacheable(value = "Product", key = "#id")
     @Override
     public Product getProductById(Integer id) {
         return sqlProductRepository.findById(id).orElse(null);
-//        Optional<Product> obj = Optional.ofNullable(redisTemplate.opsForValue().get(id));
-//        return obj.orElseGet(() -> sqlProductRepository.findById(id).orElse(null));
-
-//        Product product = redisTemplate.opsForValue().get(id);
-//        if (product == null) {
-//            Optional<Product> optionalProduct = sqlProductRepository.findById(id);
-//            optionalProduct.ifPresent(value -> redisTemplate.opsForValue().set(String.valueOf(id), value, 5, TimeUnit.MINUTES)); // Cache for 5 minutes
-//            return optionalProduct.orElse(null);
-//        } else {
-//            return product;
-//        }
-
-
     }
 
+
+    @Cacheable(value = "Product", key = "'all'")
     @Override
     public Iterable<Product> getAllProducts() {
         return sqlProductRepository.findAll();
@@ -55,7 +49,7 @@ public class SqlProductServiceImpl implements SqlProductService {
             return null; // Handle product not found case
         }
     }
-
+    @CacheEvict(key = "#id",value = "Product")
     @Override
     public void deleteProduct(Integer id) {
         sqlProductRepository.deleteById(id);

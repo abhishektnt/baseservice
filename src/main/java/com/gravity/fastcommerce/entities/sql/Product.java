@@ -3,12 +3,15 @@ package com.gravity.fastcommerce.entities.sql;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serializable;
+
 
 @Entity
 @Table(name = "product")
 @Data
-//@RedisHash("Product")
-public class Product {
+public class Product implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
