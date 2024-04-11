@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,7 @@ import javax.validation.Valid;
 @RestController("sqlcontroller")
 @RequestMapping("/api/v1/sql/products")
 public class SqlProductController {
-
+    private static final Logger logger = LoggerFactory.getLogger(SqlProductController.class);
     private final SqlProductService sqlProductService;
 
     public SqlProductController(SqlProductService sqlProductService) {
@@ -35,7 +37,9 @@ public class SqlProductController {
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @PostMapping
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
+        logger.info("Entering createProduct method with product: {}", product);
         Product savedProduct = sqlProductService.createProduct(product);
+        logger.info("Exiting createProduct method with saved product: {}", savedProduct);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
@@ -49,10 +53,13 @@ public class SqlProductController {
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/{id}")  // Gets a product by ID
     public ResponseEntity<Product> getProductById(@PathVariable int id) {
+        logger.info("Entering getProductById method with id: {}", id);
         Product product = sqlProductService.getProductById(id);
         if (product != null) {
+            logger.info("Exiting getProductById method with product: {}", product);
             return new ResponseEntity<>(product, HttpStatus.OK);
         } else {
+            logger.info("Exiting getProductById method with NOT_FOUND status");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -67,7 +74,9 @@ public class SqlProductController {
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping  // Gets all products
     public ResponseEntity<Iterable<Product>> getAllProducts() {
+        logger.info("Entering getAllProducts method");
         Iterable<Product> products = sqlProductService.getAllProducts();
+        logger.info("Exiting getAllProducts method with products: {}", products);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
@@ -81,10 +90,13 @@ public class SqlProductController {
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @PutMapping("/{id}")  // Updates a product by ID
     public ResponseEntity<Product> updateProduct(@PathVariable int id, @Valid @RequestBody Product product) {
+        logger.info("Entering updateProduct method with product: {}", product);
         Product updatedProduct = sqlProductService.updateProduct(product);
         if (updatedProduct != null) {
+            logger.info("Exiting updateProduct method with updated product: {}", updatedProduct);
             return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
         } else {
+            logger.info("Exiting updateProduct method with NOT_FOUND status");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -99,7 +111,9 @@ public class SqlProductController {
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @DeleteMapping("/{id}")  // Deletes a product by ID
     public ResponseEntity deleteProduct(@PathVariable int id) {
+        logger.info("Entering deleteProduct method with id: {}", id);
         sqlProductService.deleteProduct(id);
+        logger.info("Exiting deleteProduct method with NO_CONTENT status");
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

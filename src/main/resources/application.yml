@@ -4,10 +4,10 @@ server:
 spring:
   application:
     name: base-app  # Replace with your desired service name
-  #  data:
-  #    mongodb:
-  #      uri: mongodb://localhost:27017/catalouge  # Replace with your MongoDB connection URI
-  #      database: catalouge  # Replace with your MongoDB database name (optional, if not in URI)
+    data:
+      mongodb:
+        uri: mongodb://localhost:27017/catalouge  # Replace with your MongoDB connection URI
+        database: catalouge  # Replace with your MongoDB database name (optional, if not in URI)
   datasource:
     url: jdbc:postgresql://localhost:5432/catalouge  # Replace with your PostgreSQL connection URL
     username: postgres  # Replace with your PostgreSQL username
@@ -28,7 +28,14 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
-
+  management:
+    metrics:
+      export:
+        influx:
+          db: mydatabase
+          uri: http://localhost:8086
+          auto-create-db: true
+          enabled: true
 
 springdoc:
   swagger-ui:
@@ -41,7 +48,3 @@ app:
   openapi:
     dev-url: http://localhost:8080
     prod-url: https://gravityer-api.com
-
-#logging:
-#  level:
-#    org.apache.kafka: ERROR
